@@ -37,7 +37,7 @@
 </table>
 <script>
     async function getUserInfo() {
-        const response = await fetch('http://localhost:8080/echo');
+        const response = await fetch('/api/echo');
         if (response.ok) {
             const data = await response.json();
             const table = document.getElementById('user-info-table');
