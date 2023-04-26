@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid black;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>User Info Table</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody id="user-info-table">
+    </tbody>
+</table>
+<script>
+    async function getUserInfo() {
+        const response = await fetch('http://localhost:8080/echo');
+        if (response.ok) {
+            const data = await response.json();
+            const table = document.getElementById('user-info-table');
+            for (const [key, value] of Object.entries(data)) {
+                const row = table.insertRow();
+                const keyCell = row.insertCell();
+                const valueCell = row.insertCell();
+                keyCell.innerText = key;
+                if (typeof value === 'object') {
+                    valueCell.innerText = JSON.stringify(value, null, 4);
+                } else {
+                    valueCell.innerText = value;
+                }
+            }
+        } else {
+            console.error('Failed to fetch user information: ', response.statusText);
+        }
+    }
+    getUserInfo();
+</script>
+</body>
+</html>
